@@ -19,35 +19,51 @@ const api = async (path, opts = {}) => {
 
 // ─── THEME ────────────────────────────────────────────────────────────────────
 const G = {
-  bg:       "#0a0f0d",
-  bg2:      "#0f1710",
-  card:     "#121a13",
-  cardHov:  "#161f17",
-  border:   "#1e2d20",
-  border2:  "#243026",
-  accent:   "#3ddc84",
-  accent2:  "#2bb36a",
-  accentDim:"#1a4a2e",
-  warn:     "#f59e0b",
-  danger:   "#ef4444",
-  dangerDim:"#3d1515",
-  warnDim:  "#3d2e0a",
-  text:     "#e8f5eb",
-  text2:    "#7a9e80",
-  text3:    "#4a6b50",
-  white:    "#ffffff",
+  bg: "#07111F",
+  bg2: "#0B1728",
+
+  card: "#101D31",
+  cardHov: "#15243B",
+
+  border: "#1E3550",
+  border2: "#284566",
+
+  accent: "#22D3EE",
+  accent2: "#06B6D4",
+  accentDim: "#083344",
+
+  warn: "#F59E0B",
+  warnDim: "#3B2A12",
+
+  danger: "#EF4444",
+  dangerDim: "#3B1212",
+
+  text: "#F8FAFC",
+  text2: "#B6C2D1",
+  text3: "#6B7C93",
+
+  white: "#FFFFFF",
 };
 
 const css = `
-  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { background: ${G.bg}; color: ${G.text}; font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body {
+    background:
+      radial-gradient(circle at 10% -10%, rgba(34,211,238,.14), transparent 34%),
+      radial-gradient(circle at 95% 10%, rgba(59,130,246,.10), transparent 32%),
+      linear-gradient(135deg, #06101D 0%, #07111F 45%, #081525 100%);
+    color: ${G.text};
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
   ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: ${G.bg2}; } ::-webkit-scrollbar-thumb { background: ${G.border2}; border-radius: 2px; }
   ::selection { background: ${G.accentDim}; color: ${G.accent}; }
 
   .mono { font-family: 'DM Mono', monospace; }
-  .syne { font-family: 'Syne', sans-serif; }
+  .syne { font-family: 'Space Grotesk', sans-serif; }
 
   /* ── Animations ── */
   @keyframes fadeUp   { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
@@ -66,18 +82,96 @@ const css = `
 
   /* ── Layout ── */
   .app-shell { display:flex; min-height:100vh; }
-  .sidebar { width:220px; background:${G.bg2}; border-right:1px solid ${G.border}; display:flex; flex-direction:column; position:fixed; top:0; left:0; height:100vh; z-index:100; transition:transform .2s; }
-  .main-content { margin-left:220px; flex:1; min-height:100vh; }
+  .sidebar {
+  width:236px;
+  background: linear-gradient(
+    180deg,
+    #081220 0%,
+    #0B1728 100%
+  );
+
+  border-right:1px solid #18314D;
+
+  display:flex;
+  flex-direction:column;
+
+  position:fixed;
+  top:0;
+  left:0;
+
+  height:100vh;
+  z-index:100;
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 0 30px rgba(0,0,0,.35);
+
+  transition:transform .2s;
+}
+
+  .main-content {
+    margin-left:236px;
+    flex:1;
+    min-height:100vh;
+    width:calc(100% - 236px);
+    background:
+      radial-gradient(circle at 15% 0%, rgba(34,211,238,.08), transparent 28%),
+      radial-gradient(circle at 100% 45%, rgba(245,158,11,.055), transparent 30%);
+  }
 
   /* ── Cards ── */
-  .card { background:${G.card}; border:1px solid ${G.border}; border-radius:12px; }
+  .card {
+  background: rgba(16, 29, 49, 0.92);
+
+  border:1px solid rgba(40, 69, 102, .7);
+
+  border-radius:24px;
+  position:relative;
+  overflow:hidden;
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.30);
+}
+  .card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(34,211,238,.45), transparent);
+    pointer-events:none;
+  }
   .card-hover { transition:border-color .2s, background .2s; cursor:pointer; }
   .card-hover:hover { border-color:${G.border2}; background:${G.cardHov}; }
 
   /* ── Buttons ── */
-  .btn { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; border:none; transition:all .15s; font-family:'DM Sans',sans-serif; }
-  .btn-primary { background:${G.accent}; color:${G.bg}; }
-  .btn-primary:hover { background:${G.accent2}; transform:translateY(-1px); box-shadow:0 4px 16px ${G.accent}40; }
+  .btn { display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:12px; font-size:13px; font-weight:500; cursor:pointer; border:none; transition:all .15s; font-family:'Inter',sans-serif; }
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    #22D3EE 0%,
+    #06B6D4 100%
+  );
+
+  color:#07111F;
+
+  font-weight:700;
+
+  box-shadow:
+    0 8px 20px rgba(34,211,238,.25);
+}
+  .btn-primary:hover {
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 12px 24px rgba(34,211,238,.35);
+
+  filter:brightness(1.05);
+}
   .btn-ghost { background:transparent; color:${G.text2}; border:1px solid ${G.border2}; }
   .btn-ghost:hover { border-color:${G.accent}40; color:${G.accent}; background:${G.accentDim}20; }
   .btn-danger { background:${G.dangerDim}; color:${G.danger}; border:1px solid ${G.danger}30; }
@@ -85,7 +179,7 @@ const css = `
   .btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
 
   /* ── Inputs ── */
-  .input { width:100%; background:${G.bg2}; border:1px solid ${G.border2}; color:${G.text}; border-radius:8px; padding:10px 14px; font-size:13px; font-family:'DM Sans',sans-serif; outline:none; transition:border-color .2s; }
+  .input { width:100%; height:48px; background:${G.bg2}; border:1px solid ${G.border2}; color:${G.text}; border-radius:14px; padding:10px 14px; font-size:14px; font-family:'Inter',sans-serif; outline:none; transition:border-color .2s; }
   .input:focus { border-color:${G.accent}60; box-shadow:0 0 0 3px ${G.accent}10; }
   .input::placeholder { color:${G.text3}; }
   .label { font-size:12px; color:${G.text2}; margin-bottom:6px; display:block; letter-spacing:.03em; }
@@ -138,9 +232,55 @@ const css = `
   .dot:nth-child(3){animation:dotBlink 1.2s .4s infinite}
 
   /* ── Appliance grid ── */
-  .appliance-btn { display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:10px;cursor:pointer;border:1px solid ${G.border2};background:${G.bg2};color:${G.text2};font-size:11px;font-weight:500;transition:all .15s;text-align:center; }
-  .appliance-btn:hover { border-color:${G.accent}40;color:${G.accent}; }
-  .appliance-btn.selected { border-color:${G.accent};background:${G.accentDim};color:${G.accent}; }
+  .appliance-btn {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+
+  padding:14px 10px;
+
+  border-radius:18px;
+
+  cursor:pointer;
+
+  border:1px solid #284566;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15,25,40,.95) 0%,
+      rgba(9,18,32,.95) 100%
+    );
+
+  color:#B6C2D1;
+
+  font-size:12px;
+  font-weight:600;
+
+  transition:all .25s ease;
+
+  text-align:center;
+}
+  .appliance-btn:hover { border-color:${G.accent}70;color:${G.text}; background:${G.cardHov}; transform:translateY(-1px); }
+ .appliance-btn.selected {
+  border-color:#22D3EE;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(34,211,238,.15) 0%,
+      rgba(6,182,212,.08) 100%
+    );
+
+  color:#22D3EE;
+
+  box-shadow:
+    0 0 20px rgba(34,211,238,.15);
+}
+  .qty-control { margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .qty-btn { width:26px; height:26px; padding:0; justify-content:center; border-radius:8px; }
+  .qty-value { min-width:28px; text-align:center; color:${G.text}; font-size:13px; font-weight:600; }
 
   /* ── Progress bar ── */
   .progress-bar { height:4px;background:${G.border};border-radius:2px;overflow:hidden; }
@@ -153,7 +293,7 @@ const css = `
   @media(max-width:768px){
     .sidebar{transform:translateX(-100%);}
     .sidebar.open{transform:translateX(0);}
-    .main-content{margin-left:0;}
+    .main-content{margin-left:0;width:100%;}
   }
 `;
 
@@ -547,7 +687,7 @@ const APPLIANCES = [
   { key: "Appliance_Type_Electric_Vehicle_Charger", label: "EV Charger", icon: "⚡" },
 ];
 
-function PredictPage({ dashboards }) {
+  function PredictPage({ dashboards }) {
   const defaultForm = {
     dashboard_id: null, Household_Size: 4, Weather_Temperature: 25,
     DayOfWeek: 1, Is_Weekend: 0, Is_Cold_Season: 0, Is_Hot_Season: 1,
@@ -557,22 +697,38 @@ function PredictPage({ dashboards }) {
   const [form, setForm]       = useState(defaultForm);
   const [result, setResult]   = useState(null);
   const [loading, setLoading] = useState(false);
-  const [selAppliance, setSelAppliance] = useState(null);
+  const [selectedAppliances, setSelectedAppliances] = useState({});
 
   const setField = (k, v) => setForm(p => ({ ...p, [k]: v }));
-  const selectAppliance = (key) => {
-    const reset = Object.fromEntries(APPLIANCES.map(a => [a.key, 0]));
-    setForm(p => ({ ...p, ...reset, [key]: 1 }));
-    setSelAppliance(key);
-    const isHVAC = key === "Appliance_Type_HVAC";
-    setField("Is_HVAC", isHVAC ? 1 : 0);
+
+  const toggleAppliance = (key) => {
+    setSelectedAppliances(prev => {
+      const updated = { ...prev };
+      if (updated[key]) delete updated[key];
+      else updated[key] = 1;
+      return updated;
+    });
+  };
+
+  const updateQuantity = (key, quantity) => {
+    setSelectedAppliances(prev => ({
+      ...prev,
+      [key]: Math.max(1, Math.min(99, Number(quantity) || 1)),
+    }));
   };
 
   const submit = async () => {
-    if (!selAppliance) return toast.warn("Please select an appliance");
+    if (Object.keys(selectedAppliances).length === 0) return toast.warn("Please select at least one appliance");
     setLoading(true); setResult(null);
     try {
-      const data = await api("/predictions", { method: "POST", body: JSON.stringify(form) });
+      const resetAppliances = Object.fromEntries(APPLIANCES.map(a => [a.key, 0]));
+      const payload = {
+        ...form,
+        ...resetAppliances,
+        ...selectedAppliances,
+        Is_HVAC: selectedAppliances.Appliance_Type_HVAC ? 1 : 0,
+      };
+      const data = await api("/predictions", { method: "POST", body: JSON.stringify(payload) });
       setResult(data);
     } catch (e) { toast.error(e.message); }
     finally { setLoading(false); }
@@ -581,15 +737,24 @@ function PredictPage({ dashboards }) {
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   return (
-    <div style={{ padding: "28px 32px" }}>
+    <div style={{ padding: "32px", maxWidth: 1280, margin: "0 auto" }}>
       <div className="fade-up" style={{ marginBottom: 28 }}>
         <h1 className="syne" style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-.02em", marginBottom: 4 }}>Energy Prediction</h1>
         <p style={{ color: G.text2, fontSize: 13 }}>Get a 3-month AI-powered forecast for your household</p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: result ? "1fr 1fr" : "1fr", gap: 20 }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: result
+            ? "minmax(460px, 620px) minmax(420px, 1fr)"
+            : "minmax(460px, 720px)",
+          gap: 24,
+          alignItems: "start"
+        }}
+      >
         {/* Form */}
-        <div className="card fade-up" style={{ padding: 24 }}>
+        <div className="card fade-up" style={{ padding: 24, borderColor: "rgba(34,211,238,.22)" }}>
           {/* House */}
           {dashboards.length > 0 && (
             <div className="input-group">
@@ -651,14 +816,28 @@ function PredictPage({ dashboards }) {
           </div>
 
           <div className="input-group" style={{ marginBottom: 0 }}>
-            <label className="label">Primary appliance</label>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
-              {APPLIANCES.map(a => (
-                <button key={a.key} className={`appliance-btn ${selAppliance === a.key ? "selected" : ""}`} onClick={() => selectAppliance(a.key)}>
-                  <span style={{ fontSize: 20 }}>{a.icon}</span>
-                  <span>{a.label}</span>
-                </button>
-              ))}
+            <label className="label">Appliances and quantities</label>
+            <p style={{ color: G.text3, fontSize: 12, marginBottom: 10 }}>Select one or more appliances, then choose how many of each you have.</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(135px, 1fr))", gap: 10 }}>
+              {APPLIANCES.map(a => {
+                const quantity = selectedAppliances[a.key];
+                const isSelected = Boolean(quantity);
+
+                return (
+                  <div key={a.key} className={`appliance-btn ${isSelected ? "selected" : ""}`} onClick={() => toggleAppliance(a.key)}>
+                    <span style={{ fontSize: 24 }}>{a.icon}</span>
+                    <span>{a.label}</span>
+
+                    {isSelected && (
+                      <div className="qty-control" onClick={(e) => e.stopPropagation()}>
+                        <button className="btn btn-ghost qty-btn" onClick={() => updateQuantity(a.key, quantity - 1)}>-</button>
+                        <span className="mono qty-value">× {quantity}</span>
+                        <button className="btn btn-primary qty-btn" onClick={() => updateQuantity(a.key, quantity + 1)}>+</button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -1258,7 +1437,7 @@ function ChatbotPage({ dashboards }) {
 function TopBar({ page, unread, setPage }) {
   const titles = { overview: "Overview", predict: "Predict", weekly: "Weekly", history: "History", houses: "Houses", notifications: "Alerts", chatbot: "EcoBot" };
   return (
-    <div style={{ height: 56, background: G.bg2, borderBottom: `1px solid ${G.border}`, display: "flex", alignItems: "center", padding: "0 32px", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50 }}>
+    <div style={{ height: 64, background: "rgba(7,17,31,.72)", backdropFilter: "blur(18px)", borderBottom: `1px solid ${G.border}`, display: "flex", alignItems: "center", padding: "0 32px", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50 }}>
       <h2 className="syne" style={{ fontSize: 15, fontWeight: 600 }}>{titles[page] || page}</h2>
       <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
         <button className="btn btn-ghost" style={{ padding: "6px 10px", position: "relative" }} onClick={() => setPage("notifications")}>
