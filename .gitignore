@@ -3,4 +3,4 @@ __pycache__/
 *.pyc
 
 
-.vscode/
+.vscode/backend/app/ml/models/smart_home_model.pkl
