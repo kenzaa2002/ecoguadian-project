@@ -29,8 +29,9 @@ class Settings(BaseSettings):
     # ── Energy pricing (TND/kWh) ──────────────────────────────────────────────
     ENERGY_PRICE_TND: float = 0.199
 
-    # ── LLM API (Anthropic Claude for chatbot) ────────────────────────────────
-    ANTHROPIC_API_KEY: str = ""
+    # ── Ollama (local LLM for chatbot via langchain) ───────────────────────────
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "llama3.1"
 
     class Config:
         env_file = ".env"
