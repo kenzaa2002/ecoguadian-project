@@ -7,3 +7,5 @@ __pycache__/
 backend/app/ml/models/smart_home_model.pkl
 backend/app/ml/models/smart_home_model.pkl
 node_modules/
+node_modules/
+backend/app/ml/models/smart_home_model.pkl
